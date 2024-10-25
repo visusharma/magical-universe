@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life: A Story Unfolding</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+            z-index: 1;
+        }
+
+        #title {
+            text-align: center;
+            font-size: 3rem;
+            margin: 20px 0;
+            z-index: 2;
+            animation: fadeIn 1s ease-in-out forwards;
+            position: absolute;
+            top: 20px; /* Positioning at the top */
+            width: 100%;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+            z-index: 2;
+            opacity: 0.9;
+        }
+
+        .stanza {
+            display: none;
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <audio autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-dreams.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+    
+    <div id="overlay"></div> <!-- Semi-transparent overlay -->
+
+    <h1 id="title">Life: A Story Unfolding</h1>
+    <div class="container" id="poem">
+        <div class="stanza visible" id="stanza1">
+            <p>In this grand theater, we all play our part,</p>
+            <p>Scripts unwritten, yet felt in the heart.</p>
+        </div>
+        <div class="stanza" id="stanza2">
+            <p>Flashes come like scenes of dreams,</p>
+            <p>Fragments drift through silent streams.</p>
+            <p>I feel the weight of what’s to be,</p>
+            <p>A glimpse of fate, too far to see.</p>
+        </div>
+        <div class="stanza" id="stanza3">
+            <p>Like a teaser reel that’s out of sync,</p>
+            <p>Moments fade before I think.</p>
+            <p>I move along, I play my part,</p>
+            <p>The script’s been written from the start.</p>
+        </div>
+        <div class="stanza" id="stanza4">
+            <p>Yet others act, unaware,</p>
+            <p>In every breath, a life they bear.</p>
+            <p>But I know more, though not enough,</p>
+            <p>Life’s a movie, clear yet rough.</p>
+        </div>
+        <div class="stanza" id="stanza5">
+            <p>A riddle, a sign, a distant sound,</p>
+            <p>The future’s there, but can’t be found.</p>
+            <p>The plot unfolds, I feel it near,</p>
+            <p>But never clear, it won’t appear.</p>
+        </div>
+        <div class="stanza" id="stanza6">
+            <p>With every beat, I sense the way,</p>
+            <p>A hidden path, the light, the gray.</p>
+            <p>I feel the pull of what’s to come,</p>
+            <p>But answers hide, and I succumb.</p>
+        </div>
+        <div class="stanza" id="stanza7">
+            <p>We’re but actors in this vast array,</p>
+            <p>Among unseen powers that guide our play.</p>
+            <p>In this grand theater of life and space,</p>
+            <p>We seek the director, in a cosmic embrace.</p>
+        </div>
+        <div class="stanza" id="stanza8">
+            <p>In this unfolding story, where all shadows blend,</p>
+            <p>We play our roles, but who’s the one to send?</p>
+        </div>
+    </div>
+
+    <script>
+        let currentStanza = 0;
+        const stanzas = document.querySelectorAll('.stanza');
+        
+        function showNextStanza() {
+            stanzas[currentStanza].classList.remove('visible');
+            currentStanza = (currentStanza + 1) % stanzas.length;
+            stanzas[currentStanza].classList.add('visible');
+        }
+
+        setInterval(showNextStanza, 8000); // Change stanza every 8 seconds
+    </script>
+</body>
+</html>
