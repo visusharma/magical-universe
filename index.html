@@ -56,6 +56,7 @@
             opacity: 0.9;
             width: 100%;
             max-width: 600px; /* Limit width for larger screens */
+            display: none; /* Initially hidden */
         }
 
         .stanza {
@@ -83,14 +84,36 @@
                 font-size: 1.2rem; /* Smaller font size for stanzas */
             }
         }
+
+        #play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.9); /* Play button background */
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        #play-button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translate(-50%, -50%) scale(1.05);
+        }
     </style>
 </head>
 <body>
-    <video autoplay muted loop>
+    <video id="background-video" muted loop>
         <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    <audio autoplay loop>
+    <audio id="background-audio" loop>
         <source src="https://www.bensound.com/bensound-music/bensound-dreams.mp3" type="audio/mp3">
         Your browser does not support the audio tag.
     </audio>
@@ -145,17 +168,29 @@
         </div>
     </div>
 
+    <button id="play-button">Reveal the Story</button>
+
     <script>
         let currentStanza = 0;
         const stanzas = document.querySelectorAll('.stanza');
-        
+        const video = document.getElementById('background-video');
+        const audio = document.getElementById('background-audio');
+        const playButton = document.getElementById('play-button');
+        const poemContainer = document.getElementById('poem');
+
         function showNextStanza() {
             stanzas[currentStanza].classList.remove('visible');
             currentStanza = (currentStanza + 1) % stanzas.length;
             stanzas[currentStanza].classList.add('visible');
         }
 
-        setInterval(showNextStanza, 8000); // Change stanza every 8 seconds
+        playButton.addEventListener('click', () => {
+            video.play();
+            audio.play();
+            poemContainer.style.display = 'block'; // Show poem after clicking play
+            setInterval(showNextStanza, 8000); // Change stanza every 8 seconds
+            playButton.style.display = 'none'; // Hide button after playing
+        });
     </script>
 </body>
 </html>
