@@ -114,9 +114,30 @@
             transform: translate(-50%, -50%) scale(1.05);
             box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6); /* Darker shadow on hover */
         }
+
+         /* Link Styles */
+        #top-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 3;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #top-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
+    <a href="/signs" id="top-link">Signs</a>
+    
     <video id="background-video" muted loop autoplay>
         <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
         Your browser does not support the video tag.
