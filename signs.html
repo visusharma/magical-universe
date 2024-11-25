@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synchronicities</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -96,6 +96,7 @@
     </table>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
         // Initialize Supabase client
         const SUPABASE_URL = 'https://khmxsqtowbljvmidfmpe.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtobXhzcXRvd2JsanZtaWRmbXBlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIzODI5NjYsImV4cCI6MjA0Nzk1ODk2Nn0.rdSHbWghSA18IZpeEA4GoZDksgjeEgmRgwT87BTOvqU';
@@ -205,6 +206,7 @@
 
         // Check authentication on page load
         checkAuth();
+    });
     </script>
 </body>
 </html>
