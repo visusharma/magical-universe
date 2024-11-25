@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signs</title>
+    <title>Synchronicities</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         body {
@@ -58,9 +58,9 @@
 </head>
 <body>
     <h1>Synchronicities/Signs/Thoughts</h1>
-    <form id="add-form">
+    <form id="add-form" action="#" novalidate>
         <input type="text" id="description" placeholder="Enter synchronicity description" required>
-        <input type="created_at" id="created_at" required>
+        <input type="datetime-local" id="created_at" required>
         <button type="submit">Add Synchronicity</button>
     </form>
     <div id="error" class="error"></div>
@@ -110,24 +110,33 @@
 
         // Handle form submission
         form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            errorDiv.textContent = ''; // Clear previous error
-            const description = document.getElementById('description').value;
+            event.preventDefault(); // Prevent default form submission
+            errorDiv.textContent = ''; // Clear previous errors
+
+            // Get input values
+            const description = document.getElementById('description').value.trim();
             const created_at = document.getElementById('created_at').value;
 
-            // Insert new synchronicity
-            const { error } = await supabase
-                .from('synchronicities')
-                .insert([{ description, created_at }]);
-
-            if (error) {
-                errorDiv.textContent = 'Failed to add synchronicity!';
+            // Validate inputs
+            if (!description || !created_at) {
+                errorDiv.textContent = 'Please fill out all fields!';
                 return;
             }
 
-            // Refresh table
-            fetchSynchronicities();
-            form.reset();
+            try {
+                // Insert new synchronicity
+                const { error } = await supabase
+                    .from('synchronicities')
+                    .insert([{ description, created_at }]);
+
+                if (error) throw error;
+
+                // Refresh table
+                await fetchSynchronicities();
+                form.reset();
+            } catch (err) {
+                errorDiv.textContent = 'Failed to add synchronicity!';
+            }
         });
 
         // Fetch synchronicities on page load
