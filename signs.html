@@ -35,13 +35,13 @@
                 loginForm.style.display = 'none';
                 logoutButton.style.display = 'block';
                 addForm.style.display = 'block';
-                fetchSynchronicities();
             } else {
                 console.log("No user logged in");
                 loginForm.style.display = 'flex';
                 logoutButton.style.display = 'none';
                 addForm.style.display = 'none';
             }
+             fetchSynchronicities();
         }
 
         // Log in the user
