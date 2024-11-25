@@ -54,11 +54,25 @@
             color: red;
             text-align: center;
         }
+
+        #auth-container {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1>Synchronicities/Signs/Thoughts</h1>
-    <form id="add-form" action="#" novalidate>
+    <div id="auth-container">
+        <form id="login-form">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Log In</button>
+        </form>
+        <button id="logout-button" style="display:none;">Log Out</button>
+        <div id="auth-error" class="error"></div>
+    </div>
+
+    <form id="add-form" action="#" style="display:none;" novalidate>
         <input type="text" id="description" placeholder="Enter synchronicity description" required>
         <input type="datetime-local" id="created_at" required>
         <button type="submit">Add Synchronicity</button>
@@ -80,9 +94,49 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtobXhzcXRvd2JsanZtaWRmbXBlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIzODI5NjYsImV4cCI6MjA0Nzk1ODk2Nn0.rdSHbWghSA18IZpeEA4GoZDksgjeEgmRgwT87BTOvqU';
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const form = document.getElementById('add-form');
+        const loginForm = document.getElementById('login-form');
+        const logoutButton = document.getElementById('logout-button');
+        const addForm = document.getElementById('add-form');
         const tableBody = document.querySelector('#synchronicities-table tbody');
         const errorDiv = document.getElementById('error');
+        const authErrorDiv = document.getElementById('auth-error');
+        const authContainer = document.getElementById('auth-container');
+
+        // Check if user is logged in
+        async function checkAuth() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                authContainer.style.display = 'none';
+                logoutButton.style.display = 'block';
+                addForm.style.display = 'block';
+                fetchSynchronicities();
+            } else {
+                authContainer.style.display = 'block';
+                logoutButton.style.display = 'none';
+                addForm.style.display = 'none';
+            }
+        }
+
+        // Log in the user
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            authErrorDiv.textContent = '';
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) {
+                authErrorDiv.textContent = 'Login failed: ' + error.message;
+                return;
+            }
+            checkAuth();
+        });
+
+        // Log out the user
+        logoutButton.addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            checkAuth();
+        });
 
         // Fetch and display synchronicities
         async function fetchSynchronicities() {
@@ -109,38 +163,34 @@
         }
 
         // Handle form submission
-        form.addEventListener('submit', async (event) => {
+        addForm.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent default form submission
             errorDiv.textContent = ''; // Clear previous errors
 
-            // Get input values
             const description = document.getElementById('description').value.trim();
             const created_at = document.getElementById('created_at').value;
 
-            // Validate inputs
             if (!description || !created_at) {
                 errorDiv.textContent = 'Please fill out all fields!';
                 return;
             }
 
             try {
-                // Insert new synchronicity
                 const { error } = await supabase
                     .from('synchronicities')
                     .insert([{ description, created_at }]);
 
                 if (error) throw error;
 
-                // Refresh table
-                await fetchSynchronicities();
-                form.reset();
+                fetchSynchronicities();
+                addForm.reset();
             } catch (err) {
                 errorDiv.textContent = 'Failed to add synchronicity!';
             }
         });
 
-        // Fetch synchronicities on page load
-        fetchSynchronicities();
+        // Check authentication on page load
+        checkAuth();
     </script>
 </body>
 </html>
